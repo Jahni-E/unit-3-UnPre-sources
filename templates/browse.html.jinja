@@ -4,19 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
   </head>
   <body>
    {%include "components/navbar.html.jinja"%}
    
-   <main class ="grid grid-cols-4 gap-3 max-w-4xl mx-auto p-6 mb-5">
+   
    {%for x in products%}
-   {# use grid to be rigid layout#}
+   <a href="/product/{{x['ID']}}" class =
     <div class = "grid">
-        {#set height of Image,and use mx-auto to center #}
+        
         <img class="h-25 mx-auto" src="{{x['Image']}}">
          <br>
          {{x["Name"]}}</div>
-         {{x["Price"]}}
+         <br>
+         
+         ${{x["Price"]}}
+         <br>
+         {{x["Description"]}}
       <div class = "text-right font-bold text-sm"> {{x["price"]}}
         </div>
    {% endfor%}
