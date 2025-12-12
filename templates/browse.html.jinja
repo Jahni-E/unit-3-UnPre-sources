@@ -6,28 +6,26 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     
   </head>
-  <body>
+<body>
    {%include "components/navbar.html.jinja"%}
    
    
-   {%for x in products%}
-   <a href="/product/{{x['ID']}}" class =
-    <div class = "grid">
-        
-        <img class="h-25 mx-auto" src="{{x['Image']}}">
-         <br>
-         {{x["Name"]}}</div>
-         <br>
-         
-         ${{x["Price"]}}
-         <br>
-         {{x["Description"]}}
-      <div class = "text-right font-bold text-sm"> {{x["price"]}}
-        </div>
-   {% endfor%}
-</main>
+   <main class="grid grid-cols-2 gap-2">
+        {%for x in products%}
+        <a href="/product/{{x['ID']}}">
+            <div class="flex flex-col">
+                <img class="max-h-50 max-w-50" src="{{x['Image']}}">
+                {{x["Name"]}}
+                <br>
+                ${{x["Price"]}}
+            </div>
+        </a>
+
+        {% endfor%}
+    </main>
+
 
    
 
-  </body>
+</body>
 </html>
