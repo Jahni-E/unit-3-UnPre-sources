@@ -4,25 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     
   </head>
   <body>
     {%include "components/navbar.html.jinja"%}
     
-    <h1>
-
-    <div class = "grid grid-cols-2 ">
-    <img class="h-75 w- 75 mx-auto" src="{{ product ['Image'] }}">
-        <div class="flex justify-center">
-        {{product['Name']}}<br>
-        ${{product['Price']}}<br>
-        {{ product ['Hatsizes']}}<br>
-        </div>
-    </div>
     
-        
-    </h1>
-   
+
+    <div class="grid grid-cols-2 gap-4 pt-50 bg-cyan-400 font-serif">
+     <img class="h-75 w- 75 mx-auto pt-6 pr-4" src="{{ product ['Image'] }}">
+    
+
+        <div >{{product['Name']}}<br>
+            ${{product['Price']}}<br>
+            {{ product ['Description']}}<br> 
+         
+    </div>
+         <button class="bg-green-400">
+         Add To Cart
+         </button>
+    
 
   </body>
 </html>

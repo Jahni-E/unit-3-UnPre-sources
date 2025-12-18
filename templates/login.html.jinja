@@ -7,20 +7,19 @@
   </head>
   <body>
     {% include "components/navbar.html.jinja" %}
-
+    
+<form class="flex flex-col gap-2 bg-sky-300" method="post">
     <label>Email:</label>
-    <br>
-    <input type="email" id="email" name="email">
+    <input required type ="email">
     <br>
     <label>Password</label>
+    <input required type="password">
     <br>
-    <input type="password" id ="password" name="password">
-    <br>
-    <button type="submit">
-        <i data-include="send"></i>Login
+    <button class="bg-blue-50">
+    Login
     </button>
+    
+</form>
 
-
-
-  </body>x
+</body>
 </html>

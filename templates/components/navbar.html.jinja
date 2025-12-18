@@ -1,8 +1,20 @@
-<nav class="bg-cyan-600 p-2 flex items-alignright justify-between">
-            <a href ="/">  </a>
-            <li><a href="flex-row-reverse">My Account </a></li>
-            
-            <li><a href="/login">Login</a></li>
-             <li><a href="">Cart </a></li>
-</nav>
+<nav class="bg-sky-300 p-2 flex items-alignright justify-between">
+ <h1 class="text-3xl font-bold ">
+              Un-Pre Shop
+            </h1>
 
+<div class="flex-row-reverse">                                        
+            {%if not current_user.is_authenticated %}
+             <a href="/login" class="bg-sky-300 border border-white px-7 gap-2">Login</a>
+            {% else %}
+            <div>
+            Hi, {{current_user.name}}
+            </div>
+            {% endif %}
+            <a href="/cart" class="bg-green-400 border border-white px-7">Cart </a>
+           
+
+        
+</div>
+
+</nav>
