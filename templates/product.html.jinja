@@ -12,19 +12,25 @@
     
     
 
-    <div class="grid grid-cols-2 gap-4 pt-50 bg-cyan-400 font-serif">
+    <div class="grid grid-cols-2 gap-4 pt-50  font-serif border-5 border-sky-500">
      <img class="h-75 w- 75 mx-auto pt-6 pr-4" src="{{ product ['Image'] }}">
     
 
-        <div >{{product['Name']}}<br>
-            ${{product['Price']}}<br>
-            {{ product ['Description']}}<br> 
-         
+        
+        {{product['Name']}}<br>
+         ${{product['Price']}}<br>
+         {{ product ['Description']}}<br>
     </div>
-         <button class="bg-green-400">
+     
+             
+         
+    <form method="post" action="/product/{{ product['ID'] }}/add_to_cart">
+        <label>Qty:</label>
+        <input type="number" name="gty" value="1" min="1" max="2">
+         <button type="submit" class="bg-green-400">
          Add To Cart
          </button>
-    
+    </form>
 
   </body>
 </html>

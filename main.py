@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect,abort
-from flask_login import LoginManager, login_user,login_required,logout_user
+from flask_login import LoginManager, login_user,login_required,logout_user,current_user
 
 import pymysql
 
@@ -84,8 +84,21 @@ def product_page(product_id):
 
     if result is None:
         abort(404)
-    
     return render_template("product.html.jinja", product=result)
+
+@app.route("/product/<product_id>/add_to_cart", methods=["POST"])
+@login_required
+def add_to_cart(product_id):
+    quantity = request.form["qty"]
+    connection = connect_db()
+    cursor = connection.cursor()
+    cursor.execute("""INSERT INTO `Cart`(`Quantity`, `ProductID`, `UserID`) 
+                   VALUES (%s, %s, %s)
+                   `Quantity` = `Quantity` + %s
+                   """,(quantity, product_id, current_user.id,quantity))
+    connection.close()
+    return redirect('/cart')
+    
 
 @app.route("/login", methods = ["POST" ,"GET"])
 def login():
@@ -119,14 +132,15 @@ def login():
 @app.route("/register", methods =['POST', 'GET'])
 def register():
        if request.method == 'POST':
-           name = request.form["name"]
-           email = request.form["email"]
-           password = request.form["password"]
-           confrim_password = request.form["confirm_password"]
+           name = request.form['name']
+           email = request.form['email']
+           password = request.form['password']
+           confirm_password = request.form['confirm_password']
+           address = request.form['address']
 
-           if password != confrim_password:
+           if password != confirm_password:
                flash("Password does not match")
-           elif len (password) < 5:
+           elif len (password) < 8:
                flash("Password is too short")
            else:
             connection = connect_db()
@@ -134,16 +148,16 @@ def register():
             try:
                 cursor.execute(
                     """
-                    INSERT INTO `User` ( `Name`, `Password`, `Email`)
+                    INSERT INTO `User` ( `Name`, `Email`, `Password`)
                     VALUES(%s, %s, %s)
-                    """,(name, password, email))
+                    """,(name, email, password))
+                connection.close()
             except pymysql.err.IntegrityError:
                 flash("email already exists")
+                connection.close()
             else:
-                return redirect ("/login")
-
-       
-
+                return redirect ("/login.html.jinja")
+            
        return render_template("register.html.jinja")
 
 
