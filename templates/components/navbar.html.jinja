@@ -3,18 +3,22 @@
               Un-Pre Shop
             </h1>
 
-<div class="flex-row-reverse">                                        
+ <div class="flex-row-reverse">                                        
             {%if not current_user.is_authenticated %}
+            <a href="/" class="bg-sky-300 border border-white px-7 gap-2">Home</a>
+            
              <a href="/login" class="bg-sky-300 border border-white px-7 gap-2">Login</a>
             {% else %}
-            <div>
-            Hi, {{current_user.name}}
-            </div>
+            
+<h1 class="text-2xl font-bold text-sky-600">
+    Hi, {{current_user.name}}
+ </h1>
+            
             {% endif %}
             <a href="/cart" class="bg-green-400 border border-white px-7">Cart </a>
+
            
 
-        
-</div>
+  </div>
 
 </nav>

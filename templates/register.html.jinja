@@ -8,26 +8,31 @@
   <body>
     {% include "components/navbar.html.jinja" %}
 
-
+<form class="bg-blue-400" method="post"> 
     <label>Name</label>
     <br>
-    <input type="name" id="name" name="name">
+    <input type="name" required name="name">
     <br>
      <label>Email:</label>
     <br>
-    <input type="email" id="email" name="email">
+    <input type="email" required name="email">
     <br>
     <label>Password</label>
     <br>
-    <input type="password" id ="password" name="password">
+    <input type="password" required name="password">
     <br>
     <label>Confirm password</label>
     <br>
-    <input type="password" id="password" name="password">
+    <input type="password" required name="confirm_password">
+    <br>
+    <label>Address</label>
+    <br>
+    <input type = "address" required name="address">
+    <br>
     <br>
     <button type="submit">
-        <i data-include="send"></i>Register
+        Register
     </button>
-
+</form>
 
 

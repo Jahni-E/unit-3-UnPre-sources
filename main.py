@@ -92,9 +92,10 @@ def add_to_cart(product_id):
     quantity = request.form["qty"]
     connection = connect_db()
     cursor = connection.cursor()
-    cursor.execute("""INSERT INTO `Cart`(`Quantity`, `ProductID`, `UserID`) 
+    cursor.execute("""INSERT INTO `Cart`(`Quanity`, `ProductID`, `UserID`) 
                    VALUES (%s, %s, %s)
-                   `Quantity` = `Quantity` + %s
+                   ON DUPLICATE KEY UPDATE
+                   `Quanity` = `Quanity` + %s
                    """,(quantity, product_id, current_user.id,quantity))
     connection.close()
     return redirect('/cart')
@@ -102,7 +103,7 @@ def add_to_cart(product_id):
 
 @app.route("/login", methods = ["POST" ,"GET"])
 def login():
-  if request.method== 'Post':
+  if request.method== 'POST':
       email = request.form['email']
       password = request.form['password']
      
@@ -112,15 +113,13 @@ def login():
       cursor = connection.cursor()
 
       cursor.execute(" SELECT * FROM `User` WHERE `Email` = %s", (email))
-      result = cursor.fetchone
-
-      print(result)
+      result = cursor.fetchone()
 
       connection.close()
 
       if result is None:
           flash("No user found")
-      elif password != result["password"]:
+      elif password != result["Password"]:
           flash("Incorrect password")
       else:
           login_user(User(result))
@@ -129,7 +128,7 @@ def login():
      
   return render_template("login.html.jinja",)
 
-@app.route("/register", methods =['POST', 'GET'])
+@app.route("/register", methods =['GET', 'POST'])
 def register():
        if request.method == 'POST':
            name = request.form['name']
@@ -143,20 +142,20 @@ def register():
            elif len (password) < 8:
                flash("Password is too short")
            else:
-            connection = connect_db()
-            cursor = connection.cursor()
-            try:
-                cursor.execute(
-                    """
-                    INSERT INTO `User` ( `Name`, `Email`, `Password`)
-                    VALUES(%s, %s, %s)
-                    """,(name, email, password))
-                connection.close()
-            except pymysql.err.IntegrityError:
-                flash("email already exists")
-                connection.close()
-            else:
-                return redirect ("/login.html.jinja")
+                connection = connect_db()
+                cursor = connection.cursor()
+                try:
+                        cursor.execute(
+                            """
+                            INSERT INTO `User` ( `Name`, `Email`, `Password`, `Address`)
+                            VALUES(%s, %s, %s, %s)
+                            """,(name, email, password, address))
+                        connection.close()
+                except pymysql.err.IntegrityError:
+                        flash("email already exists")
+                        connection.close()
+                else:
+                    return redirect("/login")
             
        return render_template("register.html.jinja")
 
@@ -166,3 +165,35 @@ def register():
 def logout():
        logout_user()
        return redirect("/")
+
+@app.route("/cart")
+def cart():
+   connection = connect_db()
+   
+   cursor = connection.cursor()
+
+   cursor.execute("""SELECT * FROM `Cart` 
+   JOIN `Product` ON `Product`.`ID` = `Cart`.`ProductID`
+    WHERE `UserID` = %s;""",(current_user.id))
+   
+   results = cursor.fetchall()
+
+   connection.close()
+
+   return render_template("cart.html.jinja", cart=results)  
+
+@app.route("/cart/<product_id>/update_qty", methods=["POST"])
+@login_required
+def update_cart(product_id):
+    new_qty = request.form['qty']
+
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+         UPDATE `Cart`
+         SET `Quanity` =  %s
+         WHERE `ProductID` = %s AND `UserID` = %s        
+     """,(new_qty,product_id,current_user.id))
+    connection.close()
+    return redirect('/cart')

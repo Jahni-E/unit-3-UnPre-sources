@@ -8,17 +8,17 @@
   <body>
     {% include "components/navbar.html.jinja" %}
     
-<form class="flex flex-col gap-2 bg-sky-300" method="post">
+<form class="flex flex-col gap-2 bg-blue-400" method="post">
     <label>Email:</label>
-    <input required type ="email">
+    <input required name="email" type ="email">
     <br>
     <label>Password</label>
-    <input required type="password">
+    <input required name="password" type="password">
     <br>
-    <button class="bg-blue-50">
+    <button type="submit" class="bg-blue-50">
     Login
     </button>
-    
+    <a href="{{url_for('register')}}">Sign up</a>
 </form>
 
 </body>
