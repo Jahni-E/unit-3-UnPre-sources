@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+  {% include "components/navbar.html.jinja" %}
+  <main class="grid grid-cols-2">
+  <div>
+  {%for x in cart%}
+  <div class="">
+  <img src="{{x['Image']}}">
+  {{x['Name']}}
+          
+    <form class="grid grid-cols-3 gap-4" method="post" action="/cart/{{x['ProductID']}}/update_qty">
+    <input class="w-full" name="qty" type="number" value=" {{x['Quantity']}} ">
+    </form>
+    F{{x['Price']}} 
+    F{{x['Price']* x['Quanity']}}
+  </div>
+{%endfor%}
+</div>
+    <div class="pt-20">
+    <form method="post" class="mt-8 border-4 text-2l font-bold border-gray-600 w-60 text-center m-40 ">
+    <label>Street</label>
+    <input class="border-4 border-sky-500 "required name="Street" type ="Street">
+    <br>
+    <label>City</label>
+    <input class="border-4 border-sky-500 " required name="City" type="City">
+    <br>
+    <label>Apartment#</label>
+    <input class="border-4 border-sky-500 "required name="Apaertment#" type="Apaertment#">
+    <br>
+    <label>ZipCode</label>
+    <input class="border-4 border-sky-500 " required name="ZipCode" type="ZipCode">
+    <br>
+    <button class="bg-green-400 cursor-pointer  "type="submit">BUY</button>
+    </form>
+    </div>
+</main>
+
+
+</body>
+  
+    
+</html>

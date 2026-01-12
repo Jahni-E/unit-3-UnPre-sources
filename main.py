@@ -197,3 +197,55 @@ def update_cart(product_id):
      """,(new_qty,product_id,current_user.id))
     connection.close()
     return redirect('/cart')
+
+@app.route("/checkout", methods=["POST", "GET"])
+@login_required
+def checkout():
+   connection = connect_db()
+   
+   cursor = connection.cursor()
+
+   cursor.execute("""SELECT * FROM `Cart`
+    JOIN `Product` ON `Product`.`ID` = `Cart`.`ProductID`
+    WHERE `UserID` = %s;""",(current_user.id)) 
+   results = cursor.fetchall()
+
+   if request.method== 'POST':
+        cursor.execute("INSERT INTO `Sale`(`UserID`) Values (%s)",(current_user.id,))
+        sale = cursor.lastrowid
+        for item in results:
+            cursor.execute("""
+            INSERT INTO `SaleCart`
+                (`SaleID`, `ProductID`, `Quanity`)
+            VALUES
+                (%s, %s, %s) 
+            """, (sale, item['ProductID'], item['Quanity']))
+        cursor.execute("DELETE FROM `Cart` WHERE `UserID`= %s", (current_user.id,))
+        return redirect('/thank-you')      
+   connection.close()
+   
+   return render_template("checkout.html.jinja",cart=results)
+
+@app.route("/orders")
+@login_required
+def orders():
+    connection = connect_db()
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+                SELECT
+                   `Sale`,`ID`
+                   `Sale`,`Timestamp`,
+                   SUM(`SaleCart`,`Quanity`) AS 'Quanity' ,
+                   SUM(`SaleCart`,`Quanity` * `Product`,`Price`) AS 'Total'
+                FROM `Sale`
+                JOIN `SaleCart` ON `SaleCart`,`ProductID
+                JOIN `Product` ON `Product`,`ID` = `SaleCart`,`ProductID`
+                WHERE `UserID` = %s
+                GROUP BY `Sale`,`ID`;
+            """,(current_user.id))
+    
+    results = cursor.fetchall()
+    
+    connection.close()
