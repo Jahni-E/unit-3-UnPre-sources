@@ -100,6 +100,26 @@ def add_to_cart(product_id):
     connection.close()
     return redirect('/cart')
     
+@app.route("/product/<product_id>/review",methods=["POST"])
+@login_required
+def add_review(product_id):
+    rating = request.form["rating"]
+    comments = request.form["comments"]
+    connection = connect_db()
+    cursor = connection.cursor()
+    cursor.execute("""
+        INSERT INTO `Review`
+                   (`Rating`,`Comments`, `UserID`, `ProductID`)
+        VALUES
+            (%s,%s,%s,%s)         
+    """,(rating, comments, current_user.id, product_id))
+    connection.close()
+
+    return redirect(f"/product/{product_id}")
+
+
+
+
 
 @app.route("/login", methods = ["POST" ,"GET"])
 def login():
@@ -234,18 +254,22 @@ def orders():
     cursor = connection.cursor()
 
     cursor.execute("""
-                SELECT
-                   `Sale`,`ID`
-                   `Sale`,`Timestamp`,
-                   SUM(`SaleCart`,`Quanity`) AS 'Quanity' ,
-                   SUM(`SaleCart`,`Quanity` * `Product`,`Price`) AS 'Total'
+            SELECT
+                   `Sale`.`ID`,
+                   `Sale`.`Timestamp`,
+                   SUM(`SaleCart`.`Quanity`) AS 'Quanity' ,
+                   SUM(`SaleCart`.`Quanity` * `Product`.`Price`) AS 'Total'
                 FROM `Sale`
-                JOIN `SaleCart` ON `SaleCart`,`ProductID
-                JOIN `Product` ON `Product`,`ID` = `SaleCart`,`ProductID`
+                JOIN `SaleCart` ON `SaleCart`.`SaleID` = `Sale`.`ID`
+                JOIN `Product` ON `Product`.`ID` = `SaleCart`.`ProductID`
                 WHERE `UserID` = %s
-                GROUP BY `Sale`,`ID`;
+                GROUP BY `Sale`.`ID`;
             """,(current_user.id))
     
     results = cursor.fetchall()
     
     connection.close()
+
+    return render_template("orders.html.jinja", order=results)
+
+

@@ -17,8 +17,9 @@
     <form class="grid grid-cols-3 gap-4" method="post" action="/cart/{{x['ProductID']}}/update_qty">
     <input class="w-full" name="qty" type="number" value=" {{x['Quantity']}} ">
     </form>
-    F{{x['Price']}} 
-    F{{x['Price']* x['Quanity']}}
+    ${{x['Price']}} 
+    <br>
+  <div class="text-2xl font-bold">Total${{x['Price']* x['Quanity']}}</div>
   </div>
 {%endfor%}
 </div>

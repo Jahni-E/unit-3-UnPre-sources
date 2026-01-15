@@ -12,7 +12,7 @@
     
     
 
-    <div class="grid grid-cols-2 gap-4 pt-50 bg-emerald-400  font-bold border-5 border-sky-500">
+    <div class="grid grid-cols-2 gap-4 pt-50 bg-gray-200  font-bold border-5 border-sky-500">
      <img class="h-75 w-75 mx-auto pt-6 pr-4" src="{{ product ['Image'] }}">
     
 
@@ -24,13 +24,23 @@
      
              
          
-    <form method="post" action="/product/{{ product['ID'] }}/add_to_cart">
-        <label>Qty:</label>
-        <input type="number" name="qty" value="1" min="1" max="2">
+    <form class=""method="post" action="/product/{{ product['ID'] }}/add_to_cart">
+        <label class="font-bold">Qty:</label>
+        <input class="border" type="number" name="qty" value="1" min="1" max="2">
          <button type="submit" class="bg-green-400">
          Add To Cart
          </button>
     </form>
+    <br>
+  <div>
+    <form method="post" action="/product/{{ product['ID'] }}/review">
+    <label class="font-bold">Rating</label>
+    <input name="rating" type="number" min="1" max="5"><br>
+    <label class="font-bold">Comments</label>
+    <textarea name="comments"class="border"></textarea><br>
 
+    <button class="bg-green-400" type="submit">Submit</button>
+    </form>
+  </div>
   </body>
 </html>

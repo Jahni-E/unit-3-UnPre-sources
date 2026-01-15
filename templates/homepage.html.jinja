@@ -7,12 +7,17 @@
   </head>
   <body>
   {% include "components/navbar.html.jinja" %}
-
+<div class="text-center">
     <h1 class="text-3xl font-bold ">
               New Latest Drops 
             </h1>
-   <img  src="/static/products/JaMorant3's.jpeg">
-
-   <a class ="text-3xl font-bold" href="{{url_for('browse')}}">Browse Products</a>
+    <div class="grid grid-cols-4 gap-4">        
+   <img class="pt-20"src="/static/products/JaMorant3's.jpeg">
+   <img class="pt-20" src="/static/products/grey_beanie.jpeg">
+   <img class="pt-20" src="/static/products/Amiri_shirt.jpeg">
+   <img class="pt-20" src="/static/products/Dior_shoes.jpeg">
+    </div>
+   <a class ="text-3xl font-bold text-center" href="{{url_for('browse')}}">Browse Products</a>
+  </div>
   </body>
 </html>

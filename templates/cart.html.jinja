@@ -7,22 +7,23 @@
   <body>
     {% include "components/navbar.html.jinja" %}
     
-    <main class = "max-w-4xl mx-auto p-6 mb-5">
-    <h1 class="text-3xl font-bold ">Your Cart</h1>
+    <main class = "max-w-4xl mx-auto p-6 mb-5 bg-sky-500">
+    <h1 class="text-3xl font-bold underline">Cart</h1>
 
 
     {%for x in cart%}
-    <div class = "row-span-2 row-end-3">
-    <img src="{{x['Image']}}">
+    <div class ="row-span-2 row-end-3">
+    <img class="border" src="{{x['Image']}}">
     {{x['Name']}}
           <div>
            <form method="post" action="/cart/{{x['ProductID']}}/update_qty">
-           <input class="w-full" name="qty" type="number" value=" {{x['Quantity']}} ">
+           <input class="w-full bg-gray-400" name="qty" type="number" value=" {{x['Quantity']}} ">
             <button type="submit">Update</button>
            </form>
           </div>
-          <div>F{{x['Price']}} </div>
-          <div>F{{x['Price']* x['Quanity']}}</div>
+          <div>${{x['Price']}} </div>
+          <div class="text-2xl font-bold">Total${{x['Price']* x['Quanity']}}</div>
+           <a class="text-green-400 border-4 " href="{{url_for('checkout')}}">Checkout</a>
       </div>
 
 
