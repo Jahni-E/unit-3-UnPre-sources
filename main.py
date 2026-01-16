@@ -246,6 +246,11 @@ def checkout():
    
    return render_template("checkout.html.jinja",cart=results)
 
+
+@app.route("/thank-you")
+def thankyou():
+    return render_template("thankyou.html.jinja")
+
 @app.route("/orders")
 @login_required
 def orders():
